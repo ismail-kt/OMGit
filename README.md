@@ -84,13 +84,14 @@ git clone https://github.com/path/repository.git
 
 ### Create a new branch
 
-Create a new branch based on `[base_branch]` or on current branch if `[base_banch]` isn't informed:
+Create a new branch based on `[base_branch]` or on current branch if `[base_banch]` isn't informed
+and check it out right away:
 
 ```console
 git checkout -b <branch_name> [base_banch]
 ```
 
-Create a new branch based on current branch:
+Create a new branch based on current branch and stays on current branch:
 
 ```console
 git branch <branch_name>
@@ -174,6 +175,13 @@ Equivalent to:
 ```console
 git add .
 git commit -m "Commit message"
+```
+
+### Add missing file on last local commit
+
+```console
+git add missing_file.txt
+git commit --amend --no-edit
 ```
 
 ### Empty commit
@@ -582,6 +590,9 @@ git checkout .
 ### Undo local unpushed commit
 (most recent commit)
 
+Keep the work done on last commit (files will show in the stage
+area as an uncommitted change):
+
 ```console
 git reset --soft HEAD^
 ```
@@ -594,16 +605,31 @@ git reset HEAD~
 git reset HEAD <path/to/file.txt>
 ```
 
-### Reverting changes
+Delete all the work done on last commit:
 
-(Switches the current branch to the target reference, leaving
-a difference as an uncommitted change.)
+```console
+git reset --hard HEAD~1
+```
+
+### Reverting changes
 
 ```console
 git reset [--hard] <target_reference>
 ```
 
-- `--hard`: discard all changes
+Switch the current branch to the target reference,
+leaving a difference as an uncommitted change:
+
+```console
+git reset origin/master
+```
+
+Switch the current branch to the target reference,
+discarding all changes
+
+```console
+git reset --hard origin/master
+```
 
 ### Reverting changes of a specific commit
 
@@ -630,6 +656,29 @@ git commit --amend -m "New message here"
 
 ```console
 git rm --cached <path/to/file.txt>
+```
+
+### Discard all uncommitted changes on local working directory
+(uncommitted changes will be removed)
+
+```console
+git restore .
+```
+
+### Revert local commits added on wrong branch and add them to the correct branch
+
+```console
+git branch <correct_branch_name>
+git reset --hard <target_reference>
+git checkout <correct_branch_name>
+```
+
+Example: add local commits on correct `fix_typo` branch, remove them from the `master` branch, and checkout `fix_typo` branch:
+
+```console
+git branch fix_typo
+git reset --hard origin/master
+git checkout fix_typo
 ```
 
 ## Removing
